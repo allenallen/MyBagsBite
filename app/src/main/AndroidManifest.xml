@@ -20,7 +20,13 @@
 
         <service
             android:name=".Services.RegisterService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity
+            android:name=".Activity.HomePage"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_home_page"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>
