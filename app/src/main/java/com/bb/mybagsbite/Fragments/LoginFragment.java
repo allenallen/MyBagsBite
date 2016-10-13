@@ -1,8 +1,11 @@
 package com.bb.mybagsbite.Fragments;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,8 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bb.mybagsbite.Activity.HomePage;
 import com.bb.mybagsbite.R;
 import com.bb.mybagsbite.Receiver.AppResultReceiver;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +33,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener,AppR
     EditText username;
     EditText password;
     AppResultReceiver receiver;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -61,6 +69,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener,AppR
         receiver.setReceiver(this);
 
         btnSetOnClick(login,register);
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+//                    Intent i = new HomePage();
+//                    startActivity(i);
+                    Intent i = new Intent(getContext(),HomePage.class);
+                    startActivity(i);
+                } else {
+                    // User is signed out
+                    //Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
     }
 
     private void btnSetOnClick(Button ... btns) {
@@ -90,6 +116,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener,AppR
         ft.setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
                 android.R.anim.fade_in,android.R.anim.fade_out);
         ft.replace(R.id.frag_container,regFrag).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

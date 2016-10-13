@@ -4,11 +4,18 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.bb.mybagsbite.Fragments.RegisterFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -29,6 +36,10 @@ public class RegisterService extends IntentService {
     private static final String USERNAME = "userName";
     private static final String PASSWORD = "password";
     private static final String ADDRESS = "address";
+
+    private FirebaseAuth firebaseAuth;
+
+    private static Intent intentToHandle;
 
     public RegisterService() {
         super("RegisterService");
@@ -58,6 +69,8 @@ public class RegisterService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        firebaseAuth = FirebaseAuth.getInstance();
+
         if (intent != null) {
             final String action = intent.getAction();
             if (REGISTER.equals(action)) {
@@ -66,12 +79,13 @@ public class RegisterService extends IntentService {
                 final String username = intent.getStringExtra(USERNAME);
                 final String password = intent.getStringExtra(PASSWORD);
                 final String address = intent.getStringExtra(ADDRESS);
+                setIntentToHandle(intent);
                 handleActionFoo(firstName, lastName, username, password, address);
 
-                ResultReceiver rec = intent.getParcelableExtra("receiverTag");
-                Bundle b= new Bundle();
-                b.putString("ServiceTag","register complete");
-                rec.send(0, b);
+//                ResultReceiver rec = intent.getParcelableExtra("receiverTag");
+//                Bundle b= new Bundle();
+//                b.putString("ServiceTag","register complete");
+//                rec.send(0, b);
             }
         }
     }
@@ -82,13 +96,41 @@ public class RegisterService extends IntentService {
      */
     private void handleActionFoo(String ... args) {
 
+        firebaseAuth.createUserWithEmailAndPassword(args[2],args[3])
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("FIREBASE","ON CREATION");
+                        if (!task.isSuccessful()) {
+                            Log.d("FIREBASE",task.getException().getMessage());
+                            Toast.makeText(getApplicationContext(), "Registration Failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            Log.d("FIREBASE","SUCCESS");
+                            ResultReceiver rec = getIntentToHandle().getParcelableExtra("receiverTag");
+                            Bundle b = new Bundle();
+                            b.putString("ServiceTag", "register complete");
+                            rec.send(0, b);
+                        }
+                    }
+                });
+
         //Toast.makeText(this,"Register Successful",Toast.LENGTH_SHORT);
-        Log.d("ON REGISTER SERVICE:", "handleactionfoo");
-        for(String s : args){
-            Log.d("ON REGISTER:", s);
-        }
+//        Log.d("ON REGISTER SERVICE:", "handleactionfoo");
+//        for(String s : args){
+//            Log.d("ON REGISTER:", s);
+//        }
+
+
 
     }
 
 
+    public Intent getIntentToHandle() {
+        return intentToHandle;
+    }
+
+    public void setIntentToHandle(Intent intentToHandle) {
+        this.intentToHandle = intentToHandle;
+    }
 }

@@ -102,7 +102,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener,A
     public void onReceiveResult(int resultCode, Bundle resultData) {
         switch(resultCode){
             case 0:
-                Toast.makeText(getContext(),resultData.getString("ServiceTag"),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),resultData.getString("ServiceTag"),Toast.LENGTH_SHORT).show();
         }
     }
 }
