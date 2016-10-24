@@ -8,7 +8,9 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bb.mybagsbite.Model.Users;
 import com.bb.mybagsbite.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +25,7 @@ public class HomePage extends AppCompatActivity {
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
     private static final boolean AUTO_HIDE = true;
-
+    private static String user;
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
@@ -91,18 +93,18 @@ public class HomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        user = getIntent().getStringExtra(Users.USER_FIRST_NAME);
         setContentView(R.layout.activity_home_page);
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
-        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
-        String email = u.getEmail();
+//        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+//        String email = u.getEmail();
 
-        TextView t = (TextView) mContentView;
-        t.setText(email);
+//        TextView t = (TextView) mContentView;
+//        t.setText(email);
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +153,7 @@ public class HomePage extends AppCompatActivity {
 
     @SuppressLint("InlinedApi")
     private void show() {
+        //Toast.makeText(this,"Welcome "+ user,Toast.LENGTH_SHORT).show();
         // Show the system bar
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);

@@ -1,11 +1,16 @@
 package com.bb.mybagsbite;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.bb.mybagsbite.Fragments.RegisterFragment;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -22,5 +27,20 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.bb.mybagsbite", appContext.getPackageName());
+    }
+
+    @Test
+    public void testDB() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        String[] dbs = appContext.databaseList();
+
+        assertEquals(dbs[0].toString(),"MyBagsBite.db");
+    }
+
+    @Test
+    public void testRegister() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
     }
 }

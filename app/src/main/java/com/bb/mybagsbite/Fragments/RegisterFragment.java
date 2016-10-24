@@ -89,7 +89,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener,A
                 break;
             case R.id.reg_register_btn:
                 Log.d("onRegBtn","Clicked");
-                RegisterService.registerAction(getActivity(),rec,firstName.getText().toString(),lastName.getText().toString()
+                RegisterService.Companion.registerAction(getActivity(),rec,firstName.getText().toString(),lastName.getText().toString()
                 ,username.getText().toString(),password.getText().toString(),address.getText().toString());
                 getFragmentManager().popBackStack();
                 //callRegisterFragment();
