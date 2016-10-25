@@ -46,15 +46,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS contacts");
         onCreate(db);
     }
-
-//    public boolean insertUser(String firstName,String lastName,String address,
-//                              String username,String email,String password){
-//
-//
-//
-//        return false;
-//    }
-
+    
     public boolean insertUser(String ... args){
         SQLiteDatabase db = this.getWritableDatabase();
 
