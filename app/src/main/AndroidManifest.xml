@@ -13,7 +13,8 @@
         <activity android:name=".MainActivity"/>
         <activity
             android:name=".Activity.SplashActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
