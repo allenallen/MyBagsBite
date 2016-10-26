@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bb.mybagsbite.Fragments.RegisterFragment;
@@ -57,6 +58,9 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @BindView(R.id.reg_password_confirm_field)
     EditText confirmPassword;
 
+    @BindView(R.id.linlaHeaderProgress)
+    LinearLayout progress;
+
     private ResponseReceiver receiver;
 
     @Override
@@ -87,13 +91,14 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @Override
     public void onRegisterClicked() {
         Log.d("BUTTON","on Register");
-
+        progress.setVisibility(View.VISIBLE);
         Intent i = new Intent(this,RegisterFragment.class);
         i.putExtra(RegisterFragment.FIRST_NAME,firstName.getText().toString());
         i.putExtra(RegisterFragment.LAST_NAME,lastName.getText().toString());
         i.putExtra(RegisterFragment.ADDRESS,address.getText().toString());
         i.putExtra(RegisterFragment.USERNAME,username.getText().toString());
         i.putExtra(RegisterFragment.PASSWORD,password.getText().toString());
+        i.putExtra(RegisterFragment.CONFIRM_PASSWORD,confirmPassword.getText().toString());
 
         startService(i);
     }
@@ -110,15 +115,41 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String success = intent.getStringExtra(RegisterFragment.STATUS);
-            if(success.equals("OK")){
-                Log.d("DB","OK");
-                Toast.makeText(MyBagsBiteApp.get(context),"Register successful",Toast.LENGTH_SHORT).show();
+            int success = intent.getIntExtra(RegisterFragment.STATUS,-1);
+            switch(success){
+                case 1:
+                    Log.d("DB","OK");
+                    Toast.makeText(MyBagsBiteApp.get(context),"Register successful",Toast.LENGTH_SHORT).show();
+                    progress.setVisibility(View.GONE);
+                    loginUser();
+                    break;
+                case 2:
+                    Log.d("DB","NOT OK");
+                    Toast.makeText(MyBagsBiteApp.get(context),"Register unsuccessful",Toast.LENGTH_SHORT).show();
+                    progress.setVisibility(View.GONE);
+                    break;
+                case 3:
+                    password.setText("");
+                    password.setError("Password does not match");
+                    confirmPassword.setText("");
+                    confirmPassword.setError("Password does not match");
+                    progress.setVisibility(View.GONE);
+                    break;
             }
-            else{
-                Log.d("DB","NOT OK");
-                Toast.makeText(MyBagsBiteApp.get(context),"Register unsuccessful",Toast.LENGTH_SHORT).show();
-            }
+
+
         }
+    }
+
+    private void loginUser() {
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        Intent result = new Intent();
+        result.putExtra(RegisterFragment.FIRST_NAME,firstName.getText().toString());
+        setResult(1,result);
+        super.finish();
     }
 }

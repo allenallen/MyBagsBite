@@ -8,6 +8,20 @@
     android:orientation="vertical"
     android:background="@color/blue">
 
+    <LinearLayout
+        android:id="@+id/linlaHeaderProgress"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <android.support.v4.widget.ContentLoadingProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

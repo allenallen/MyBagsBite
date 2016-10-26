@@ -21,7 +21,11 @@ public class RegisterFragment extends IntentService {
     public static final String ADDRESS = "address";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String CONFIRM_PASSWORD = "confirmPassword";
 
+    public static final int REGISTER_SUCCESSFUL = 1;
+    public static final int REGISTER_NOT_SUCCESSFUL = 2;
+    public static final int REGISTER_ERROR_PASSWORD = 3;
 
 
     public RegisterFragment() {
@@ -37,23 +41,45 @@ public class RegisterFragment extends IntentService {
         String address = intent.getStringExtra(ADDRESS);
         String username = intent.getStringExtra(USERNAME);
         String password = intent.getStringExtra(PASSWORD);
+        String confirmPassword = intent.getStringExtra(CONFIRM_PASSWORD);
 
-        DBHelper db = new DBHelper(this);
-        boolean succ = db.insertUser(firstName,lastName,username,password,address);
+        boolean validPass = validatePassword(password,confirmPassword);
+        boolean succ = false;
 
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(RegisterActivity.ResponseReceiver.ACTION_RESP);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
 
-        if(succ){
-            Log.d("STATUS","OK");
-            broadcastIntent.putExtra(STATUS, "OK");
+        if(validPass){
+            DBHelper db = new DBHelper(this);
+            succ = db.insertUser(firstName,lastName,username,password,address);
+            if(succ){
+                Log.d("STATUS","OK");
+                broadcastIntent.putExtra(STATUS, REGISTER_SUCCESSFUL);
+            }
+            else {
+                Log.d("STATUS","NOT OK");
+                broadcastIntent.putExtra(STATUS, REGISTER_NOT_SUCCESSFUL);
+            }
         }
-        else {
-            Log.d("STATUS","OK");
-            broadcastIntent.putExtra(STATUS, "NOT OK");
+        else{
+            Log.d("STATUS","NOT OK");
+            broadcastIntent.putExtra(STATUS, REGISTER_ERROR_PASSWORD);
         }
+
+
 
         sendBroadcast(broadcastIntent);
     }
+
+    private boolean validatePassword(String password, String confirmPassword) {
+        if(password.equals(confirmPassword)){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }

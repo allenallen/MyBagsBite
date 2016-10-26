@@ -2,4 +2,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Splash Screen -->
+    <dimen name="splash_app_name_text_size">30sp</dimen>
+    <dimen name="splash_message_text_size">18sp</dimen>
+    <dimen name="splash_icon_height">180dp</dimen>
 </resources>

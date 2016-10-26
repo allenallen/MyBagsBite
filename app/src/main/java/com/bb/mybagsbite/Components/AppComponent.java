@@ -5,6 +5,7 @@ import android.app.Application;
 import com.bb.mybagsbite.Modules.AppModule;
 import com.bb.mybagsbite.Modules.LoginModule;
 import com.bb.mybagsbite.Modules.RegisterModule;
+import com.bb.mybagsbite.Modules.SplashModule;
 
 import javax.inject.Singleton;
 
@@ -22,4 +23,5 @@ public interface AppComponent {
 
     LoginComponent plus(LoginModule loginModule);
     RegisterComponent plus(RegisterModule registerModule);
+    SplashComponent plus(SplashModule splashModule);
 }

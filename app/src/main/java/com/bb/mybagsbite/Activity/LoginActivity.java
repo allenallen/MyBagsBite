@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.bb.mybagsbite.Fragments.RegisterFragment;
 import com.bb.mybagsbite.Modules.LoginModule;
 import com.bb.mybagsbite.MyBagsBiteApp;
 import com.bb.mybagsbite.Presenters.LoginPresenter;
@@ -54,12 +56,21 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void onRegisterButtonClicked() {
 
         Intent intent = new Intent(this,RegisterActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,0);
 //        finish();
 
     }
 
-//    @Override
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1){
+            Toast.makeText(this, "Welcome " + data.getStringExtra(RegisterFragment.FIRST_NAME), Toast.LENGTH_SHORT).show();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    //    @Override
 //    public View getLoginView() {
 //        return mLoginView;
 //    }
