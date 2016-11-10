@@ -3,6 +3,7 @@ package com.bb.mybagsbite.Components;
 import android.app.Application;
 
 import com.bb.mybagsbite.Modules.AppModule;
+import com.bb.mybagsbite.Modules.HomeModule;
 import com.bb.mybagsbite.Modules.LoginModule;
 import com.bb.mybagsbite.Modules.RegisterModule;
 import com.bb.mybagsbite.Modules.SplashModule;
@@ -24,4 +25,5 @@ public interface AppComponent {
     LoginComponent plus(LoginModule loginModule);
     RegisterComponent plus(RegisterModule registerModule);
     SplashComponent plus(SplashModule splashModule);
+    HomeComponent plus(HomeModule homeModule);
 }
